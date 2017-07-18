@@ -13,7 +13,7 @@ COPY        . /srv/airbnb
 WORKDIR     /srv/airbnb
 
 # 가상환경 내 패키지 설치사항 동기화
-RUN         /root/.pyenv/versions/airbnb/bin/pip install -r .requirements/debug.txt
+RUN         /root/.pyenv/versions/airbnb/bin/pip install -r .requirements/deploy.txt
 
 
 # upervisor 파일 지정된 경로로 복사
@@ -29,7 +29,7 @@ RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-en
 
 
 # collectstatic 실행
-RUN         /root/.pyenv/versions/airbnb/bin/python /srv/airbnb/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
+#RUN         /root/.pyenv/versions/airbnb/bin/python /srv/airbnb/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
 
 
 # supervisor 실행
