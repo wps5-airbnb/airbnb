@@ -29,7 +29,7 @@ RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-en
 
 
 # collectstatic 실행
-RUN         /root/.pyenv/versions/airbnb/bin/python /srv/airbnb/django_app/manage.py collectstatic --settings=config.settings.debug --noinput
+RUN         /root/.pyenv/versions/airbnb/bin/python /srv/airbnb/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
 
 
 # supervisor 실행
