@@ -20,6 +20,7 @@ S3_USE_SIGV4 = True
 # Storage settings
 STATICFILES_LOCATION = 'static'
 MEDIAFILES_LOCATION = 'media'
+
 DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
 STATICFILES_STORAGE = 'config.storages.StaticStorage'
 
@@ -28,7 +29,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 # 배포모드니까 DEBUG는 False
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = config_secret_deploy['django']['allowed_hosts']
 
 # Database

@@ -29,11 +29,11 @@ RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-en
 
 
 # collectstatic 실행
-#RUN         /root/.pyenv/versions/airbnb/bin/python /srv/airbnb/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
+RUN         /root/.pyenv/versions/airbnb/bin/python /srv/airbnb/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
 
 
 # supervisor 실행
-#CMD         supervisord -n
+CMD         supervisord -n
 
 
 # 외부 통신을 어느 포트와 할지 지정(오픈 포트 지정)
