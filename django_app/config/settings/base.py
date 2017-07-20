@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import json
 
+# Authentication
+AUTH_USER_MODEL = 'member.MyUser'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # 베이스 디렉토리 경로와 루트 디렉토리 경로를 설정
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'member',
 ]
 
 MIDDLEWARE = [
