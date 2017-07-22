@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from member.serializers import UserSerializer
 from ..models import House, Images
 
 
@@ -11,6 +12,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class HouseSerializer(serializers.ModelSerializer):
     image = ImageSerializer(many=True, read_only=True)
+    host = UserSerializer(read_only=True)
 
     class Meta:
         model = House

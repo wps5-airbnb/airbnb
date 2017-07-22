@@ -11,6 +11,8 @@ User = get_user_model()
 
 
 class House(models.Model):
+    def __str__(self):
+        return self.title
     # general
     title = models.TextField(max_length=200)
     host = models.ForeignKey(User)

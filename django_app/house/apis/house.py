@@ -1,4 +1,3 @@
-from django.core.files.uploadhandler import MemoryFileUploadHandler
 from rest_framework import generics, permissions
 
 from ..models import House
