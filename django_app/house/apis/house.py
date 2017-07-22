@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, request
 
 from ..models import House
 from ..serializers.house import HouseSerializer
@@ -21,7 +21,7 @@ class HouseCreateListView(generics.ListCreateAPIView):
         :param serializer: Post 요청시 받는 DATA가 있는 serializer
         :return:
         """
-        instance = serializer.save()
+        instance = serializer.save(host=self.request._user)
         images_dict = serializer._context["request"].FILES
         images = images_dict.values()
         for image in images:
