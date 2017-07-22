@@ -7,17 +7,19 @@ __all__ = [
     'Images',
 ]
 
-
 User = get_user_model()
 
 
 class House(models.Model):
-    title = models.TextField(max_length=100)
-    host = models.ForeignKey(User, )
-    address = models.TextField(max_length=200)
-    introduce = models.TextField(max_length=500)
-    space_info = models.TextField(max_length=500)
-    guest_access = models.TextField(max_length=300)
+    # general
+    title = models.TextField(max_length=200)
+    host = models.ForeignKey(User)
+    create_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now_add=True)
+    address = models.TextField(max_length=200, blank=True, null=True)
+    introduce = models.TextField(max_length=500, blank=True, null=True)
+    space_info = models.TextField(max_length=500, blank=True, null=True)
+    guest_access = models.TextField(max_length=300, blank=True, null=True)
 
     # price
     price_per_day = models.PositiveIntegerField()
@@ -30,7 +32,7 @@ class House(models.Model):
         ]
     )
 
-    #space
+    # space
     ROOM_TYPE_CHOICE = (
         ('House', '집전체'),
         ('Individual', '개인실'),
@@ -48,6 +50,9 @@ class House(models.Model):
 
 
 class Images(models.Model):
+    def __str__(self):
+        return "image_{}_{}".format(self.house.pk, self.pk)
+
     house = models.ForeignKey(House, related_name='image')
     image = models.ImageField(
         upload_to='HouseImage',
