@@ -5,3 +5,7 @@ django-extensions==1.8.1
 awsebcli==3.10.4
 Pillow==4.2.0
 uWSGI==2.0.15
+awscli==1.11.123
+psycopg2==2.7.1
+django-storages<1.7
+boto3<1.5
