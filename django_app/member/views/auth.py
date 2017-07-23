@@ -1,9 +1,10 @@
+
 from django.contrib.auth import \
     login as django_login, \
     logout as django_logout, get_user_model
 from django.shortcuts import redirect, render
 
-from ..forms.login import LoginForm
+from ..forms import LoginForm, SignupForm
 
 User = get_user_model()
 
@@ -37,11 +38,23 @@ def login(request):
 
 
 def logout(request):
-    pass
+    django_logout(request)
+    return redirect('index.html')
 
 
-def signup(requset):
-    pass
+def signup(request):
+    if request.method == 'POST':
+        form = SignupForm(data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            django_login(request, user)
+            return redirect('index.html')
+    else:
+        form = SignupForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'member/signup.html', context)
 
 
 def facebook_login(request):

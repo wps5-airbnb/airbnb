@@ -9,3 +9,4 @@ awscli==1.11.123
 psycopg2==2.7.1
 django-storages<1.7
 boto3<1.5
+requests==2.18.1
