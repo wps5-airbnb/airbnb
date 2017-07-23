@@ -37,6 +37,10 @@ CONFIG_SECRET_DEPLOY_FILE = os.path.join(CONFIG_SECRET_DIR, 'settings_deploy.jso
 config_secret_common = json.loads(open(CONFIG_SECRET_COMMON_FILE).read())
 SECRET_KEY = config_secret_common['django']['secret_key']
 
+#Facebook
+FACEBOOK_APP_ID = config_secret_common['django']['facebook']['facebook_app_id']
+FACEBOOK_SECRET_CODE = config_secret_common['django']['facebook']['facebook_secret_code']
+
 
 # Application definition
 
