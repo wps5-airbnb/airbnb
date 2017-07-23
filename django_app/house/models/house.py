@@ -55,7 +55,11 @@ class Images(models.Model):
     def __str__(self):
         return "image_{}_{}".format(self.house.pk, self.pk)
 
-    house = models.ForeignKey(House, related_name='image')
+    house = models.ForeignKey(
+        House,
+        related_name='image',
+        on_delete=models.CASCADE
+    )
     image = models.ImageField(
         upload_to='HouseImage',
         blank=True,

@@ -40,3 +40,26 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         permissions.IsAuthenticatedOrReadOnly,
         IsHouseOwner,
     ]
+
+    """
+    이미지 update 관련 이슈
+    """
+
+    # 이미지 삭제 요청 > 어떻게 받을 것인지
+    # 이미지 추가 > 요건 쉬움
+    # 이미지 바꾸기 > 요건 어떻게?
+
+    def perform_update(self, serializer):
+        """
+        일단 PATCH단계에서 이미지를 가져오면 그냥 중복여부 상관없이 무조건 새로 추가해줌
+        """
+        instance = House.objects.get(pk=serializer.data['pk'])
+
+        if serializer._context["request"].FILES is not None:
+            images_dict = serializer._context["request"].FILES
+            images = images_dict.values()
+            for image in images:
+                instance.image.create(
+                    house=instance,
+                    image=image,
+                )
