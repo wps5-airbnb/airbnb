@@ -74,3 +74,7 @@ class MyUser(AbstractUser):
     # 위에서 만든 CustomUserManager를 objects속성으로 사용
     # User.objects.create_facebook_user()메서드
     objects = UserManager()
+
+    def __str__(self):
+        return self.nickname or self.username
+

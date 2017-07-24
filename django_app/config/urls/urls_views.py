@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^$', views.Index.as_view())
 ]
 # /static/에 대한 요청을 STATIC_ROOT경로의 파일에서 찾는다
-urlpatterns += static(prefix=settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(prefix=settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # /media/에 대한 요청을 MEDIA_ROOT경로의 파일에서 찾는다
-urlpatterns += static(prefix=settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(prefix=settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
