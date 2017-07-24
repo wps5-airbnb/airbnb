@@ -6,6 +6,7 @@
             {% csrf_token %}
             {% include 'include/field_set.html' %}
             <button type="submit" class="btn">Login</button>
+            <a href="https://www.facebook.com/v2.9/dialog/oauth?client_id={{facebook_app_id}}&scope=user_friends,public_profile,email&redirect_uri={{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'member:facebook_login' %}" class="btn btn-primary">Facebook Login</a>
         </form>
     </div>
 {% endblock %}

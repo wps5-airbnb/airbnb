@@ -7,7 +7,7 @@ from .. import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.Index.as_view()),
+    url(r'^$', views.Index.as_view(), name='index'),
     url(r'^member/', include('member.urls.url_views')),
 ]
 # /static/에 대한 요청을 STATIC_ROOT경로의 파일에서 찾는다

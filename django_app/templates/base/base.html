@@ -8,7 +8,17 @@
     <title>AirBnb Project</title>
 </head>
 <body>
-{% block content %}
-{% endblock %}
+<div class="test">
+{{ user }}
+{% if user.is_authenticated %}
+{{ user }}가 로그인 중 입니다.
+{% else %}
+<a href="{% url 'member:login' %}" class="btn">로그인</a>하세요
+{% endif %}
+</div>
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
 </body>
 </html>
