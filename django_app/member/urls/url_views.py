@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^login/facebook/$', views.facebook_login, name='facebook_login'),
+    url(r'^profile/$', views.profile, name='my_profile'),
+    url(r'^profile/edit/$', views.profile_edit, name='profile_edit'),
 ]

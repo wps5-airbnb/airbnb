@@ -8,7 +8,10 @@
     <title>AirBnb Project</title>
 </head>
 <body>
-<div class="test">
+<div>
+    <div>
+        <a href="{% url 'member:my_profile' %}">프로필수정</a>
+    </div>
 {% if user.is_authenticated %}
 {{ user }}가 로그인 중 입니다.
     <a href="{% url 'member:logout' %}" class="btn">로그아웃</a>
