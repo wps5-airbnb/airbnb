@@ -12,10 +12,8 @@ from utils.fields import CustomImageField
 
 class UserManager(DefaultUserManager):
     def get_or_create_facebook_user(self, user_info):
-        username = '{}_{}_{}'.format(
-            self.model.USER_TYPE_FACEBOOK,
-            settings.FACEBOOK_APP_ID,
-            user_info['id']
+        username = '{}'.format(
+            user_info['name']
         )
         user, user_created = self.get_or_create(
             username=username,
@@ -23,7 +21,7 @@ class UserManager(DefaultUserManager):
             defaults={
                 'last_name': user_info.get('last_name', ''),
                 'first_name': user_info.get('first_name', ''),
-                'email': user_info.get('email', ''),
+                'username': user_info.get('name', ''),
             }
         )
         # 유저가 새로 생성되었을 때만 프로필 이미지를 받아옴

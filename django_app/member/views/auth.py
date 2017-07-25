@@ -191,4 +191,4 @@ def facebook_login(request):
     except DebugTokenException as e:
         print(e.code)
         print(e.message)
-        # return add_message_and_redirect_referer()
+        return add_message_and_redirect_referer()
