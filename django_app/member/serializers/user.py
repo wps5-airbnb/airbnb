@@ -46,7 +46,7 @@ class UserCreationSerializer(serializers.Serializer):
     password2 = serializers.CharField(write_only=True)
 
     def validate_username(self, username):
-        if User.objects.filter(username=username).exists():
+        if MyUser.objects.filter(username=username).exists():
             raise serializers.ValidationError('Username already exist')
         return username
 
@@ -57,9 +57,11 @@ class UserCreationSerializer(serializers.Serializer):
 
     def save(self, *args, **kwargs):
         username = self.validated_data.get('username', '')
+        email = self.validated_data.get('email',)
         password = self.validated_data.get('password1', '')
-        user = User.objects.create_user(
+        user = MyUser.objects.create_user(
             username=username,
+            email=email,
             password=password
         )
         return user

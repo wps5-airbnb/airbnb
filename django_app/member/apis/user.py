@@ -27,3 +27,4 @@ class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         permissions.IsAuthenticatedOrReadOnly,
         ObjectIsRequestUser
     )
+
