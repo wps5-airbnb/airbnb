@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'member',
     'house',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
