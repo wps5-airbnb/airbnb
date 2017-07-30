@@ -27,7 +27,7 @@ class House(models.Model):
     price_per_day = models.PositiveIntegerField()
     extra_people_fee = models.PositiveIntegerField()
     cleaning_fee = models.PositiveIntegerField()
-    weekly_discount = models.IntegerField(
+    weekly_discount = models.PositiveIntegerField(
         validators=[
             MinValueValidator(0),
             MaxValueValidator(100),
