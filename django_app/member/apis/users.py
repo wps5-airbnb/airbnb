@@ -1,0 +1,29 @@
+from rest_framework import generics
+
+from ..models import MyUser
+from ..serializers import UserSerializer, UserCreateSerializer
+
+__all__ = [
+    'UserCreateListView',
+]
+
+
+class UserCreateListView(generics.ListCreateAPIView):
+    queryset = MyUser.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return UserCreateSerializer
+        elif self.request.method == 'GET':
+            return UserSerializer
+
+    def perform_create(self, serializer):
+        instance = serializer.save(username=self.request.POST['username'])
+        if serializer._context["request"].FILES is not None:
+            img_profile_gen = serializer._context["request"].FILES.values()
+
+            for img_profile in img_profile_gen:
+                instance.img_profile = img_profile
+                instance.save()
+                break
+
