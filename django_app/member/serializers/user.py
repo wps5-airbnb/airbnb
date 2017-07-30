@@ -10,6 +10,7 @@ __all__ = [
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = [
-            'username',
-        ]
+        exclude = (
+            'password',
+        )
+

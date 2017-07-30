@@ -12,6 +12,7 @@ class MyUser(AbstractUser):
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICE,
+        default='OTHER',
     )
     birthday = models.DateField(blank=True, null=True)
     phone_num = models.CharField(max_length=20, blank=True, null=True)

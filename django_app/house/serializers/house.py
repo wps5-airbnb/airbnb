@@ -7,7 +7,9 @@ from ..models import House, Images
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
-        fields = '__all__'
+        fields = [
+            'image',
+        ]
 
 
 class HouseSerializer(serializers.ModelSerializer):
