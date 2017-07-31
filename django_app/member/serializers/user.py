@@ -2,22 +2,19 @@ from rest_framework import serializers
 
 from ..models import MyUser
 
-__all__ = (
+__all__ = [
     'UserSerializer',
     'UserUpdateSerializer',
-    'UserCreationSerializer',
-)
+
+    'UserCreateSerializer',
+]
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = (
-            'pk',
-            'username',
-            'email',
-            'nickname',
-            'img_profile',
+        exclude = (
+            'password',
         )
 
 
@@ -38,11 +35,11 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         )
 
 
-class UserCreationSerializer(serializers.Serializer):
+class UserCreateSerializer(serializers.Serializer):
     username = serializers.CharField(
         max_length=100,
     )
-    password1 = serializers.CharField()
+    password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
 
     def validate_username(self, username):
@@ -57,11 +54,9 @@ class UserCreationSerializer(serializers.Serializer):
 
     def save(self, *args, **kwargs):
         username = self.validated_data.get('username', '')
-        email = self.validated_data.get('email',)
         password = self.validated_data.get('password1', '')
         user = MyUser.objects.create_user(
             username=username,
-            email=email,
-            password=password
+            password=password,
         )
         return user
