@@ -36,16 +36,14 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(serializers.Serializer):
-    username = serializers.CharField(
-        max_length=100,
-    )
+    email = serializers.EmailField()
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
 
-    def validate_username(self, username):
-        if MyUser.objects.filter(username=username).exists():
-            raise serializers.ValidationError('Username already exist')
-        return username
+    def validate_email(self, email):
+        if MyUser.objects.filter(email=email).exists():
+            raise serializers.ValidationError('This Email already exist')
+        return email
 
     def validate(self, data):
         if data['password1'] != data['password2']:
@@ -53,10 +51,10 @@ class UserCreateSerializer(serializers.Serializer):
         return data
 
     def save(self, *args, **kwargs):
-        username = self.validated_data.get('username', '')
+        email = self.validated_data.get('email', '')
         password = self.validated_data.get('password1', '')
         user = MyUser.objects.create_user(
-            username=username,
+            email=email,
             password=password,
         )
         return user

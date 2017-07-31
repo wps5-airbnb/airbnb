@@ -18,7 +18,7 @@ class UserCreateListView(generics.ListCreateAPIView):
             return UserSerializer
 
     def perform_create(self, serializer):
-        instance = serializer.save(username=self.request.POST['username'])
+        instance = serializer.save(email=self.request.POST['email'])
         if serializer._context["request"].FILES is not None:
             img_profile_gen = serializer._context["request"].FILES.values()
 
