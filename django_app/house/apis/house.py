@@ -40,7 +40,6 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         permissions.IsAuthenticatedOrReadOnly,
         IsHouseOwner,
     ]
-
     """
     이미지 update 관련 이슈
     """
@@ -49,7 +48,7 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     # 이미지 추가 > 요건 쉬움
     # 이미지 바꾸기 > 요건 어떻게?
 
-    def perform_update(self, serializer):
+    def perform_patch(self, serializer):
         """
         일단 PATCH단계에서 이미지를 가져오면 그냥 중복여부 상관없이 무조건 새로 추가해줌
         """
