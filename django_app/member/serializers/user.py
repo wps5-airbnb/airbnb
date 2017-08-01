@@ -4,8 +4,6 @@ from ..models import MyUser
 
 __all__ = [
     'UserSerializer',
-    'UserUpdateSerializer',
-
     'UserCreateSerializer',
 ]
 
@@ -15,19 +13,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = MyUser
         exclude = (
             'password',
-        )
+            'is_superuser',
+            'is_staff',
+            'is_active',
+            'identifier',
 
-
-class UserUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MyUser
-        fields = (
-            'pk',
-            'username',
-            'ori_password',
-            'password1',
-            'password2',
-            'img_profile',
         )
         read_only_fields = (
             'username',
