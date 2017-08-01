@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login, authenticate
 from django.utils import timezone
 from rest_framework import parsers, renderers
 from rest_framework.authtoken.models import Token
@@ -17,6 +17,9 @@ User = get_user_model()
 
 
 class ObtainAuthToken(APIView):
+    """
+    이게 로그인 기능 대용 : 로그인이 정상적으로 완료되면 토큰을 반환
+    """
     throttle_classes = ()
     permission_classes = ()
     parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
@@ -38,7 +41,7 @@ obtain_auth_token = ObtainAuthToken.as_view()
 
 class UserLogoutView(APIView):
     def post(self, request):
-        token = Token.objects.get(key=request.data.get('token'))
+        token = Token.objects.get(key=request._auth)
         user = User.objects.get(pk=token.user_id)
         user.auth_token.delete()
         return Response('Logout Completed')

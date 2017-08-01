@@ -14,7 +14,6 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class HouseSerializer(serializers.ModelSerializer):
     house_images = ImageSerializer(many=True, read_only=True, source='image')
-    bed_num = serializers.IntegerField(source='beds', read_only=True)
     host = UserSerializer(read_only=True)
 
     class Meta:
@@ -36,7 +35,7 @@ class HouseSerializer(serializers.ModelSerializer):
             'accommodates',
             'bathrooms',
             'bedrooms',
-            'bed_num',
+            'beds',
             'room_type',
             'house_images',
 

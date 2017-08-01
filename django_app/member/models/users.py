@@ -4,7 +4,6 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
 def f():
     """
     랜덤한 코드를 생성해주는 함수
