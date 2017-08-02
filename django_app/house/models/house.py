@@ -5,6 +5,7 @@ from django.db import models
 __all__ = [
     'House',
     'Images',
+    'Amenities',
 ]
 
 User = get_user_model()
@@ -13,6 +14,7 @@ User = get_user_model()
 class House(models.Model):
     def __str__(self):
         return self.title
+
     # general
     title = models.TextField(max_length=200)
     host = models.ForeignKey(User)
@@ -49,6 +51,10 @@ class House(models.Model):
         choices=ROOM_TYPE_CHOICE,
         default='House',
     )
+    amenities = models.ManyToManyField(
+        'Amenities',
+        related_name='amenities_manager',
+    )
 
 
 class Images(models.Model):
@@ -65,3 +71,10 @@ class Images(models.Model):
         blank=True,
         null=True,
     )
+
+
+class Amenities(models.Model):
+    def __str__(self):
+        return self.name
+
+    name = models.CharField(max_length=100)

@@ -1,7 +1,8 @@
 from rest_framework import generics, permissions
+from rest_framework.response import Response
 
 from utils.permissions import IsHouseOwner
-from ..models import House
+from ..models import House, Amenities
 from ..serializers.house import HouseSerializer
 
 __all__ = [
@@ -26,11 +27,21 @@ class HouseCreateListView(generics.ListCreateAPIView):
         instance = serializer.save(host=self.request._user)
         images_dict = serializer._context["request"].FILES
         images = images_dict.values()
-        for image in images:
-            instance.image.create(
-                house=instance,
-                image=image,
-            )
+        if images:
+            for image in images:
+                instance.image.create(
+                    house=instance,
+                    image=image,
+                )
+        built_in_amenities = [i.name for i in Amenities.objects.all()]
+        amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
+        if len(amenities_list) - 1:
+            for name in amenities_list:
+                if name in built_in_amenities:
+                    instance.amenities.add(Amenities.objects.get(name=name))
+                    instance.save()
+                else:
+                    raise ValueError("Amenities {}의 이름이 올바르지 않습니다.(스펠링, 대소문자, 쉼표구분 체크하세요)".format(name))
 
 
 class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
@@ -48,11 +59,13 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     # 이미지 추가 > 요건 쉬움
     # 이미지 바꾸기 > 요건 어떻게?
 
-    def perform_patch(self, serializer):
+
+    def perform_update(self, serializer):
         """
         일단 PATCH단계에서 이미지를 가져오면 그냥 중복여부 상관없이 무조건 새로 추가해줌
         """
-        instance = House.objects.get(pk=serializer.data['pk'])
+
+        instance = House.objects.get(pk=self.kwargs["pk"])
 
         if serializer._context["request"].FILES is not None:
             images_dict = serializer._context["request"].FILES
@@ -62,3 +75,20 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
                     house=instance,
                     image=image,
                 )
+
+        built_in_amenities = [i.name for i in Amenities.objects.all()]
+        amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
+        if len(amenities_list) - 1:
+            instance.amenities.clear()
+            for name in amenities_list:
+                if name in built_in_amenities:
+                    instance.amenities.add(Amenities.objects.get(name=name))
+                    instance.save()
+                else:
+                    raise ValueError("Amenities {}의 이름이 올바르지 않습니다.(스펠링, 대소문자, 쉼표구분 체크하세요)".format(name))
+        serializer.save()
+
+# lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',
+#          'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
+#          'Wireless_Internet', 'Free_parking', 'Breakfast', 'Dryer', 'Cable_TV', 'Hangers',
+#          'Washer', 'Shampoo', 'Essentials', 'Heating', 'TV', 'Air_conditioning', ]
