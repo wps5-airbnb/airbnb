@@ -48,6 +48,8 @@ class HouseSerializer(serializers.ModelSerializer):
             'room_type',
             'house_images',
             'amenities',
+            'latitude',
+            'longitude',
 
         ]
         read_only_fields = [

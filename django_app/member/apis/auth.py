@@ -40,7 +40,7 @@ obtain_auth_token = ObtainAuthToken.as_view()
 
 
 class UserLogoutView(APIView):
-    def post(self, request):
+    def get(self, request):
         token = Token.objects.get(key=request._auth)
         user = User.objects.get(pk=token.user_id)
         user.auth_token.delete()
