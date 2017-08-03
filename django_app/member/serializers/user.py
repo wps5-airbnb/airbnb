@@ -36,10 +36,15 @@ class UserSerializer(serializers.ModelSerializer):
             'date_joined',
         ]
 
+
 class UserCreateSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
+    first_name = serializers.CharField(write_only=True)
+    last_name = serializers.CharField(write_only=True)
+    birthday = serializers.DateField(write_only=True)
+    agreement = serializers.BooleanField(default=False)
 
     def validate_email(self, email):
         if MyUser.objects.filter(email=email).exists():
@@ -51,11 +56,22 @@ class UserCreateSerializer(serializers.Serializer):
             raise serializers.ValidationError('Passwords didn\'t match')
         return data
 
+    def validate_agreement(self, agreement):
+        if not agreement:
+            raise serializers.ValidationError("동의하지 않으면 가입이 안되요")
+        return agreement
+
     def save(self, *args, **kwargs):
         email = self.validated_data.get('email', '')
         password = self.validated_data.get('password1', '')
+        first_name = self.validated_data.get('first_name', '')
+        last_name = self.validated_data.get('last_name', '')
+        birthday = self.validated_data.get('birthday', '')
         user = MyUser.objects.create_user(
             email=email,
             password=password,
+            first_name=first_name,
+            last_name=last_name,
+            birthday=birthday,
         )
         return user

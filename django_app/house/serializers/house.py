@@ -3,13 +3,13 @@ from rest_framework import serializers
 from member.serializers import UserSerializer
 from ..models import House, Images, Amenities
 
+
 class AmenitieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Amenities
         fields = [
             'name',
         ]
-
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class HouseSerializer(serializers.ModelSerializer):
     house_images = ImageSerializer(many=True, read_only=True, source='image')
-    amenities = AmenitieSerializer(many=True, read_only=True,)
+    amenities = AmenitieSerializer(many=True, read_only=True, )
     host = UserSerializer(read_only=True)
 
     class Meta:
