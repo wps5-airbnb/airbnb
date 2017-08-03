@@ -16,6 +16,7 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
         fields = [
+            '_order',
             'image',
         ]
 

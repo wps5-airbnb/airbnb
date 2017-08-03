@@ -86,6 +86,12 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
                     instance.save()
                 else:
                     raise ValueError("Amenities {}의 이름이 올바르지 않습니다.(스펠링, 대소문자, 쉼표구분 체크하세요)".format(name))
+
+        # House에 해당하는 이미지의 순서를 재기록
+        for index, image in enumerate(instance.image.all()):
+            image._order = index
+            image.save()
+
         serializer.save()
 
 # lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',

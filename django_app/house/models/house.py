@@ -75,6 +75,9 @@ class Images(models.Model):
         null=True,
     )
 
+    class Meta:
+        order_with_respect_to = 'house'
+
 
 class Amenities(models.Model):
     def __str__(self):
