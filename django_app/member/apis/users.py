@@ -1,10 +1,14 @@
-from rest_framework import generics
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from utils.permissions import ObjectIsRequestUser
 from ..models import MyUser
 from ..serializers import UserSerializer, UserCreateSerializer
 
 __all__ = [
     'UserCreateListView',
+    'UserRetrieveUpdateDestroyView',
 ]
 
 
@@ -26,4 +30,13 @@ class UserCreateListView(generics.ListCreateAPIView):
                 instance.img_profile = img_profile
                 instance.save()
                 break
+
+
+class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MyUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        ObjectIsRequestUser
+    )
 
