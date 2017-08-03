@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from ..models import MyUser
@@ -41,10 +42,23 @@ class UserCreateSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-    first_name = serializers.CharField(write_only=True)
-    last_name = serializers.CharField(write_only=True)
-    birthday = serializers.DateField(write_only=True)
-    agreement = serializers.BooleanField(default=False)
+    first_name = serializers.CharField(
+        write_only=True,
+        allow_blank=True,
+        allow_null=True,
+        default='null',
+    )
+    last_name = serializers.CharField(
+        write_only=True,
+        allow_blank=True,
+        allow_null=True,
+        default='null',
+    )
+    birthday = serializers.DateField(
+        write_only=True,
+        default='1990-01-01',
+    )
+    agreement = serializers.BooleanField(default=True)
 
     def validate_email(self, email):
         if MyUser.objects.filter(email=email).exists():
