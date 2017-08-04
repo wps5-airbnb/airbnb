@@ -47,6 +47,9 @@ class NewUserManager(BaseUserManager):
 
 
 class MyUser(AbstractUser):
+    def __str__(self):
+        return self.email
+
     GENDER_CHOICE = (
         ('MALE', '남자'),
         ('FEMALE', '여자'),
