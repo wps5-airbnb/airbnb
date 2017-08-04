@@ -4,6 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
 def f():
     """
     랜덤한 코드를 생성해주는 함수
@@ -46,6 +47,9 @@ class NewUserManager(BaseUserManager):
 
 
 class MyUser(AbstractUser):
+    def __init__(self):
+        return self.email
+
     GENDER_CHOICE = (
         ('MALE', '남자'),
         ('FEMALE', '여자'),
