@@ -1,5 +1,5 @@
+from django.utils import timezone
 from rest_framework import generics, permissions
-from rest_framework.response import Response
 
 from utils.permissions import IsHouseOwner
 from ..models import House, Amenities
@@ -59,7 +59,6 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     # 이미지 추가 > 요건 쉬움
     # 이미지 바꾸기 > 요건 어떻게?
 
-
     def perform_update(self, serializer):
         """
         일단 PATCH단계에서 이미지를 가져오면 그냥 중복여부 상관없이 무조건 새로 추가해줌
@@ -91,6 +90,10 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         for index, image in enumerate(instance.image.all()):
             image._order = index
             image.save()
+
+        # modified_date update
+        instance.modified_date = timezone.now()
+        instance.save()
 
         serializer.save()
 
