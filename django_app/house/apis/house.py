@@ -1,6 +1,7 @@
 from django.utils import timezone
 from rest_framework import generics, permissions
 
+from .paginator import ResultsSetPagination
 from utils.permissions import IsHouseOwner
 from ..models import House, Amenities
 from ..serializers.house import HouseSerializer
@@ -8,6 +9,7 @@ from ..serializers.house import HouseSerializer
 __all__ = [
     'HouseCreateListView',
     'HouseRetrieveUpdateDestroyView',
+    'HouseCreateListViewWithPage',
 ]
 
 
@@ -101,3 +103,7 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 #          'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
 #          'Wireless_Internet', 'Free_parking', 'Breakfast', 'Dryer', 'Cable_TV', 'Hangers',
 #          'Washer', 'Shampoo', 'Essentials', 'Heating', 'TV', 'Air_conditioning', ]
+
+
+class HouseCreateListViewWithPage(HouseCreateListView):
+    pagination_class = ResultsSetPagination
