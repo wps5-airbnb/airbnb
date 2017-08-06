@@ -1,8 +1,9 @@
+from django.db import models
 from django.utils import timezone
 from rest_framework import generics, permissions
 
-from .paginator import ResultsSetPagination
 from utils.permissions import IsHouseOwner
+from .paginator import ResultsSetPagination
 from ..models import House, Amenities
 from ..serializers.house import HouseSerializer
 
@@ -68,6 +69,32 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
         instance = House.objects.get(pk=self.kwargs["pk"])
 
+        built_in_amenities = [i.name for i in Amenities.objects.all()]
+        if serializer._context["request"].POST.get("amenities") is not None and serializer._context["request"].POST.get("amenities") is not '':
+            amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
+            if len(amenities_list) - 1:
+                instance.amenities.clear()
+                for name in amenities_list:
+                    if name in built_in_amenities:
+                        instance.amenities.add(Amenities.objects.get(name=name))
+                        instance.save()
+                    else:
+                        raise ValueError("Amenities {}의 이름이 올바르지 않습니다.(스펠링, 대소문자, 쉼표구분 체크하세요)".format(name))
+
+        # House 이미지 삭제요청이 들어온 경우
+        if serializer._context["request"].POST.get("image_crusher") is not None and serializer._context["request"].POST.get("image_crusher") is not '':
+            death_note = [i.strip() for i in serializer._context["request"].POST["image_crusher"].split(',')]
+            for order_num in death_note:
+                try:
+                    instance.image.get(_order=order_num)
+                except models.ObjectDoesNotExist:
+                    pass
+                else:
+                    if instance.image.get(_order=order_num) is not None:
+                        instance.image.get(_order=order_num).delete()
+                        instance.save()
+
+        # 이미지 신규 등록부분
         if serializer._context["request"].FILES is not None:
             images_dict = serializer._context["request"].FILES
             images = images_dict.values()
@@ -76,17 +103,6 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
                     house=instance,
                     image=image,
                 )
-
-        built_in_amenities = [i.name for i in Amenities.objects.all()]
-        amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
-        if len(amenities_list) - 1:
-            instance.amenities.clear()
-            for name in amenities_list:
-                if name in built_in_amenities:
-                    instance.amenities.add(Amenities.objects.get(name=name))
-                    instance.save()
-                else:
-                    raise ValueError("Amenities {}의 이름이 올바르지 않습니다.(스펠링, 대소문자, 쉼표구분 체크하세요)".format(name))
 
         # House에 해당하는 이미지의 순서를 재기록
         for index, image in enumerate(instance.image.all()):
@@ -98,6 +114,7 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance.save()
 
         serializer.save()
+
 
 # lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',
 #          'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
