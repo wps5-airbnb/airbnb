@@ -17,7 +17,7 @@ RUN         /root/.pyenv/versions/airbnb/bin/pip install -r .requirements/deploy
 
 
 
-# upervisor 파일 지정된 경로로 복사
+# supervisor 파일 지정된 경로로 복사
 COPY         .config/supervisor/uwsgi.conf /etc/supervisor/conf.d/
 COPY         .config/supervisor/nginx.conf /etc/supervisor/conf.d/
 
