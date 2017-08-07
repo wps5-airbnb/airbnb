@@ -25,12 +25,6 @@ class HouseSerializer(serializers.ModelSerializer):
     house_images = ImageSerializer(many=True, read_only=True, source='image')
     amenities = AmenitieSerializer(many=True, read_only=True, )
     host = UserSerializer(read_only=True)
-    image_crusher = serializers.CharField(
-        write_only=True,
-        allow_blank=True,
-        allow_null=True,
-        default='null',
-    )
 
     class Meta:
         model = House
@@ -57,8 +51,6 @@ class HouseSerializer(serializers.ModelSerializer):
             'amenities',
             'latitude',
             'longitude',
-            'image_crusher',
-
         ]
         read_only_fields = [
             'pk',
@@ -66,3 +58,15 @@ class HouseSerializer(serializers.ModelSerializer):
             'modified_date',
             'amenities',
         ]
+
+
+class HouseUpdateSerializer(HouseSerializer):
+    image_crusher = serializers.CharField(
+        write_only=True,
+        allow_blank=True,
+        allow_null=True,
+        default='null',
+    )
+
+    class Meta(HouseSerializer.Meta):
+        fields = HouseSerializer.Meta.fields + ["image_crusher"]

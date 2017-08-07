@@ -5,7 +5,7 @@ from rest_framework import generics, permissions
 from utils.permissions import IsHouseOwner
 from .paginator import ResultsSetPagination
 from ..models import House, Amenities
-from ..serializers.house import HouseSerializer
+from ..serializers.house import HouseSerializer, HouseUpdateSerializer
 
 __all__ = [
     'HouseCreateListView',
@@ -49,7 +49,7 @@ class HouseCreateListView(generics.ListCreateAPIView):
 
 class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = House.objects.all()
-    serializer_class = HouseSerializer
+    serializer_class = HouseUpdateSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
         IsHouseOwner,
