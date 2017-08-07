@@ -37,14 +37,16 @@ class HouseCreateListView(generics.ListCreateAPIView):
                     image=image,
                 )
         built_in_amenities = [i.name for i in Amenities.objects.all()]
-        amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
-        if len(amenities_list) - 1:
-            for name in amenities_list:
-                if name in built_in_amenities:
-                    instance.amenities.add(Amenities.objects.get(name=name))
-                    instance.save()
-                else:
-                    raise ValueError("Amenities {}의 이름이 올바르지 않습니다.(스펠링, 대소문자, 쉼표구분 체크하세요)".format(name))
+        if serializer._context["request"].POST.get("amenities") is not None and serializer._context["request"].POST.get("amenities") is not '':
+            amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
+            if len(amenities_list) - 1:
+                instance.amenities.clear()
+                for name in amenities_list:
+                    if name in built_in_amenities:
+                        instance.amenities.add(Amenities.objects.get(name=name))
+                        instance.save()
+                    else:
+                        raise ValueError("Amenities {}의 이름이 올바르지 않습니다.(스펠링, 대소문자, 쉼표구분 체크하세요)".format(name))
 
 
 class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
