@@ -112,8 +112,8 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
             image.save()
 
         # modified_date update
-        instance.modified_date = timezone.now()
-        instance.save()
+        # instance.modified_date = timezone.now()
+        # instance.save()
 
         serializer.save()
 

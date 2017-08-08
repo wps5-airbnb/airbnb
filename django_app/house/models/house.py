@@ -19,7 +19,7 @@ class House(models.Model):
     title = models.TextField(max_length=300)
     host = models.ForeignKey(User)
     create_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     address = models.TextField(max_length=200, blank=True, null=True)
     introduce = models.TextField(max_length=1000, blank=True, null=True)
     space_info = models.TextField(max_length=1000, blank=True, null=True)
