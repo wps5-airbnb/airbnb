@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-
 from house.models import House
 
 User = get_user_model()
@@ -14,8 +13,14 @@ __all__ = [
 
 class Reservations(models.Model):
     # 예약자
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    house = models.ForeignKey(House, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    house = models.ForeignKey(
+        House,
+        on_delete=models.CASCADE,
+    )
 
     # 예약 인원
     adult_number = models.PositiveIntegerField(default=1)

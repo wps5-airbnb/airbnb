@@ -27,6 +27,7 @@ class HouseSerializer(serializers.ModelSerializer):
     amenities = AmenitieSerializer(many=True, read_only=True, )
     host = UserSerializer(read_only=True)
     reservations = ReservationSerializer(source='reservations_set', many=True)
+
     class Meta:
         model = House
         fields = [

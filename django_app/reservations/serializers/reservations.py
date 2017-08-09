@@ -1,9 +1,7 @@
 from rest_framework import serializers
 
 from house.models import House
-from house.serializers.house import HouseSerializer
 from member.models import MyUser
-from member.serializers import UserSerializer
 from ..models import Reservations, Holiday
 
 
@@ -14,15 +12,11 @@ __all__ = [
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    house = HouseSerializer(read_only=True)
 
     class Meta:
         model = Reservations
         fields = [
             'pk',
-            'user',
-            'house',
             'adult_number',
             'child_number',
             'infant_number',
