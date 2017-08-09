@@ -58,9 +58,9 @@ class House(models.Model):
 
     latitude = models.FloatField(verbose_name='위도')
     longitude = models.FloatField(verbose_name='경도')
+
     reservation_user_set = models.ManyToManyField(
         User,
-        null=True,
         blank=True,
         related_name='reservation_user_set',
         through='reservations.Reservations'

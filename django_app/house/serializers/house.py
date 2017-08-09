@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from member.serializers import UserSerializer
+from reservations.serializers import ReservationSerializer
 from ..models import House, Images, Amenities
 
 
@@ -25,7 +26,7 @@ class HouseSerializer(serializers.ModelSerializer):
     house_images = ImageSerializer(many=True, read_only=True, source='image')
     amenities = AmenitieSerializer(many=True, read_only=True, )
     host = UserSerializer(read_only=True)
-
+    reservations = ReservationSerializer(source='reservations_set', many=True)
     class Meta:
         model = House
         fields = [
@@ -51,12 +52,14 @@ class HouseSerializer(serializers.ModelSerializer):
             'amenities',
             'latitude',
             'longitude',
+            'reservation_user_set',
         ]
         read_only_fields = [
             'pk',
             'create_date',
             'modified_date',
             'amenities',
+            'reservation_user_set',
         ]
 
 
