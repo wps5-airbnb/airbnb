@@ -23,7 +23,7 @@ class Reservations(models.Model):
     )
 
     # 예약 인원
-    adult_number = models.PositiveIntegerField(default=1)
+    adult_number = models.PositiveIntegerField(default=1, blank=False)
     child_number = models.PositiveIntegerField(default=0)
     infant_number = models.PositiveIntegerField(default=0)
 

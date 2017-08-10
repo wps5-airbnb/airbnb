@@ -1,10 +1,4 @@
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import generics, permissions, status
-from rest_framework.response import Response
-
-from house.models import House
-from member.models import MyUser
+from rest_framework import generics, permissions, filters
 from utils.permissions import ObjectIsRequestUser
 from ..models import Reservations
 from ..serializers import ReservationSerializer
@@ -21,6 +15,8 @@ class ReservationCreateListView(generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
     ]
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('user', 'house')
 
     # def get_queryset(self):
     #     return Reservations.objects.filter(house__reservation_user_set=self.kwargs['pk'])
@@ -68,6 +64,7 @@ class ReservationCreateListView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
 
 class ReservationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reservations.objects.all()

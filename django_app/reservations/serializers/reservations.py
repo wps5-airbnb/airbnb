@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
 from house.models import House
+from house.serializers.house import HouseSerializer
 from member.models import MyUser
+from member.serializers import UserSerializer
 from ..models import Reservations, Holiday
 
 
@@ -12,11 +14,14 @@ __all__ = [
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-
+    user = UserSerializer()
+    house = HouseSerializer()
     class Meta:
         model = Reservations
         fields = [
             'pk',
+            'user',
+            'house',
             'adult_number',
             'child_number',
             'infant_number',
@@ -29,7 +34,9 @@ class ReservationSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'pk',
             'created_date',
-            'updated_date'
+            'updated_date',
+            'user',
+            'house',
         ]
 
     def save(self, **kwargs):
