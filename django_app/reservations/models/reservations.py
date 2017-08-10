@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django_filters import fields
+
 from house.models import House
 
 User = get_user_model()
@@ -30,6 +32,7 @@ class Reservations(models.Model):
     # 체크인/체크아웃
     checkin_date = models.DateField(null=False, blank=False)
     checkout_date = models.DateField(null=False, blank=False)
+    # reserved_date = models.DateField(unique=True)
 
     # 예약 날짜
     created_date = models.DateTimeField(auto_now_add=True)
@@ -39,7 +42,7 @@ class Reservations(models.Model):
     message_to_host = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return 'Name: {}\nCheck in: {} ~ Check out: {}'.format(
+        return '{}님\nCheck in: {} ~ Check out: {} 일자로 예약이 완료 되었습니다.'.format(
             self.user,
             self.checkin_date,
             self.checkout_date

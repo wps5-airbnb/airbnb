@@ -15,6 +15,7 @@ class ReservationCreateListView(generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
     ]
+
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('user', 'house')
 
