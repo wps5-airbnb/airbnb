@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from reservations.models import Reservations
+
 __all__ = [
     'House',
     'Images',
@@ -58,6 +60,12 @@ class House(models.Model):
 
     latitude = models.FloatField(verbose_name='위도')
     longitude = models.FloatField(verbose_name='경도')
+
+    guest = models.ManyToManyField(
+        User,
+        through=Reservations,
+        related_name='reservations_to'
+    )
 
 
 class Images(models.Model):

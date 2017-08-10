@@ -4,7 +4,7 @@ from ..apis import HouseCreateListView, HouseRetrieveUpdateDestroyView, HouseCre
 
 urlpatterns = [
     url(r'^$', HouseCreateListView.as_view()),
-    url(r'^(?P<pk>\d+)/$', HouseRetrieveUpdateDestroyView.as_view()),
+    url(r'^(?P<house_pk>\d+)/$', HouseRetrieveUpdateDestroyView.as_view()),
     url(r'^separated/$', HouseCreateListViewWithPage.as_view()),
-    url(r'^(?P<pk>\d+)/reservations/$', include('reservations.urls.urls_apis')),
+    url(r'^(?P<house_pk>\d+)/reservations/', include('reservations.urls.urls_apis')),
 ]
