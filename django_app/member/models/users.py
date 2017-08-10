@@ -74,4 +74,11 @@ class MyUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['identifier', ]
 
+    USER_TYPE_DJANGO = 'django'
+    USER_TYPE_FACEBOOK = 'facebook'
+    CHOICE_USER_TYPE = (
+        (USER_TYPE_DJANGO, 'Django'),
+        (USER_TYPE_FACEBOOK, 'Facebook'),
+    )
+    user_type = models.CharField(max_length=20, choices=CHOICE_USER_TYPE, )
     objects = NewUserManager()
