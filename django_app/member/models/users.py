@@ -74,4 +74,10 @@ class MyUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['identifier', ]
 
+    like_houses = models.ManyToManyField(
+        'house.House',
+        through='wishlist.Wishlist',
+        related_name='wishlist_info'
+    )
+
     objects = NewUserManager()
