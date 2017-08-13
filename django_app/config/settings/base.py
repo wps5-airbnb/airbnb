@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'utils',
     'house',
     'reservations',
+    'reviews',
 
     'rest_framework',
     'rest_framework.authtoken',
