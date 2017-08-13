@@ -1,11 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django_filters import fields
 
 from house.models import House
 
 User = get_user_model()
-
 
 __all__ = [
     'Reservations',
@@ -32,7 +30,8 @@ class Reservations(models.Model):
     # 체크인/체크아웃
     checkin_date = models.DateField(null=False, blank=False)
     checkout_date = models.DateField(null=False, blank=False)
-    # reserved_date = models.DateField(unique=True)
+
+    reserved_date = models.DateField()
 
     # 예약 날짜
     created_date = models.DateTimeField(auto_now_add=True)
