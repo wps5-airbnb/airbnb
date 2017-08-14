@@ -33,8 +33,6 @@ class Reservations(models.Model):
     checkin_date = models.DateField(null=False, blank=False)
     checkout_date = models.DateField(null=False, blank=False)
 
-    reserved_date = DateRangeField
-
     # 예약 날짜
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

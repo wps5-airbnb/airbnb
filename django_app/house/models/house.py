@@ -67,6 +67,7 @@ class House(models.Model):
     )
 
 
+
 class Images(models.Model):
     def __str__(self):
         return "image_{}_{}".format(self.house.pk, self.pk)
