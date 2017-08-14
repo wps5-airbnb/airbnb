@@ -1,7 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.fields import DateRangeField
 from django.db import models
-from psycopg2._range import DateRange
 
 from house.models import House
 
@@ -15,7 +13,7 @@ __all__ = [
 
 class Reservations(models.Model):
     # 예약자
-    user = models.ForeignKey(
+    guest = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
@@ -25,9 +23,9 @@ class Reservations(models.Model):
     )
 
     # 예약 인원
-    adult_number = models.PositiveIntegerField(default=1, blank=False)
-    child_number = models.PositiveIntegerField(default=0)
-    infant_number = models.PositiveIntegerField(default=0)
+    adults = models.PositiveIntegerField(default=1, blank=False)
+    children = models.PositiveIntegerField(default=0)
+    infants = models.PositiveIntegerField(default=0)
 
     # 체크인/체크아웃
     checkin_date = models.DateField(null=False, blank=False)
@@ -42,7 +40,7 @@ class Reservations(models.Model):
 
     def __str__(self):
         return '{}님\nCheck in: {} ~ Check out: {} 일자로 예약이 완료 되었습니다.'.format(
-            self.user,
+            self.guest,
             self.checkin_date,
             self.checkout_date
         )

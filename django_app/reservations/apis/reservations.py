@@ -1,4 +1,3 @@
-from django.views.generic import CreateView
 from rest_framework import generics, permissions, filters
 
 from utils.permissions import ObjectIsRequestUser
@@ -19,7 +18,7 @@ class ReservationCreateListView(generics.ListCreateAPIView):
     ]
 
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('user', 'house')
+    filter_fields = ('guest', 'house')
 
     def perform_create(self, serializer):
         serializer.save()

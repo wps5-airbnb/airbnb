@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+
 __all__ = [
     'House',
     'Images',
@@ -19,7 +20,7 @@ class House(models.Model):
     title = models.TextField(max_length=300)
     host = models.ForeignKey(User)
     create_date = models.DateTimeField(auto_now_add=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     address = models.TextField(max_length=200, blank=True, null=True)
     introduce = models.TextField(max_length=1000, blank=True, null=True)
     space_info = models.TextField(max_length=1000, blank=True, null=True)
@@ -59,13 +60,11 @@ class House(models.Model):
     latitude = models.FloatField(verbose_name='위도')
     longitude = models.FloatField(verbose_name='경도')
 
-    guest_user = models.ManyToManyField(
+    guest = models.ManyToManyField(
         User,
-        blank=True,
-        related_name='reserved_house',
+        related_name='reservations_to',
         through='reservations.Reservations',
     )
-
 
 
 class Images(models.Model):

@@ -2,9 +2,12 @@
 FROM        gaius827/airbnb
 MAINTAINER  gaius827@gmail.com
 
-
+# 전역 언어 설정
 ENV         LANG C.UTF-8
 
+# 한국 시간 설정
+ENV         TZ 'Asia/Seoul'
+RUN         echo $TZ > /etc/timezone && apt-get update && apt-get install -y tzdata && rm /etc/localtime && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && dpkg-reconfigure -f noninteractive tzdata && apt-get clean
 
 # 현재 경로의 모든 파일들을 컨테이너의 /srv/airbnb폴더로 복사
 COPY        . /srv/airbnb

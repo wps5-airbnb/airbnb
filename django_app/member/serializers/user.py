@@ -42,19 +42,16 @@ class UserCreateSerializer(serializers.Serializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
     first_name = serializers.CharField(
-        write_only=True,
         allow_blank=True,
         allow_null=True,
         default='null',
     )
     last_name = serializers.CharField(
-        write_only=True,
         allow_blank=True,
         allow_null=True,
         default='null',
     )
     birthday = serializers.DateField(
-        write_only=True,
         default='1990-01-01',
     )
     agreement = serializers.BooleanField(default=True)
@@ -81,6 +78,7 @@ class UserCreateSerializer(serializers.Serializer):
         last_name = self.validated_data.get('last_name', '')
         birthday = self.validated_data.get('birthday', '')
         user = MyUser.objects.create_user(
+            username=email,
             email=email,
             password=password,
             first_name=first_name,

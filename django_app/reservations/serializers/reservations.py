@@ -15,23 +15,23 @@ __all__ = [
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    guest = UserSerializer(read_only=True)
     house = HouseSerializer(read_only=True)
 
     class Meta:
         model = Reservations
         fields = [
             'pk',
-            'adult_number',
-            'child_number',
-            'infant_number',
+            'adults',
+            'children',
+            'infants',
             'checkin_date',
             'checkout_date',
             'created_date',
             'updated_date',
             'message_to_host',
             'house',
-            'user',
+            'guest',
         ]
 
         read_only_fields = [
@@ -39,47 +39,37 @@ class ReservationSerializer(serializers.ModelSerializer):
             'created_date',
             'updated_date',
             'house',
-            'user',
+            'guest',
         ]
 
     def validate(self, data):
         checkin_date = data['checkin_date']
         checkout_date = data['checkout_date']
-        dt = checkout_date - checkin_date
+
+        schedule_of_stay = checkout_date - checkin_date
 
         house_pk = int(self.context["request"].query_params["house"])
         house = House.objects.get(pk=house_pk)
 
-        reserved_date_list = [checkin_date + timedelta(n) for n in range(dt.days)]
+        reserved_date_list = [checkin_date + timedelta(n) for n in range(schedule_of_stay.days)]
         for date in reserved_date_list:
             if house.reservations_set.filter(checkin_date__lt=date, checkout_date__gt=date).exists():
                 raise serializers.ValidationError('이미 예약되어있는 기간입니다.')
         return data
 
-    # def validate_reserved_date(self, reserved_date):
-    #     if Reservations.objects.filter(reserved_date=reserved_date).exists():
-    #         raise serializers.ValidationError("Already reserved")
-    #     return reserved_date
-
-    # def validate_reserved_date(self, reserved_date):
-    #     if Reservations.objects.filter(reserved_date=reserved_date).exists():
-    #         raise serializers.ValidationError('Already reserved')
-    #     return reserved_date
-
     def save(self, *args, **kwargs):
-        user_pk = self.context["request"].auth.user.pk
+        guest_pk = self.context["request"].auth.user.pk
         house_pk = int(self.context["request"].query_params["house"])
-        user = MyUser.objects.get(pk=user_pk)
+        guest = MyUser.objects.get(pk=guest_pk)
         house = House.objects.get(pk=house_pk)
         checkin_date = self.validated_data.get('checkin_date', '')
         checkout_date = self.validated_data.get('checkout_date', '')
         message_to_host = self.data["message_to_host"]
         Reservations.objects.create(
-            user=user,
+            guest=guest,
             house=house,
             checkin_date=checkin_date,
             checkout_date=checkout_date,
-            # reserved_date=reserved_date,
             message_to_host=message_to_host,
         )
 

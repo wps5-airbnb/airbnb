@@ -1,10 +1,10 @@
-from django.contrib.auth import get_user_model, login, authenticate
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework import parsers, renderers
 from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from ..serializers import NewAuthTokenSerializer
 
 __all__ = [
@@ -13,7 +13,6 @@ __all__ = [
 ]
 
 User = get_user_model()
-
 
 
 class ObtainAuthToken(APIView):
@@ -33,7 +32,11 @@ class ObtainAuthToken(APIView):
         token, created = Token.objects.get_or_create(user=user)
         user.last_login = timezone.now()
         user.save(update_fields=['last_login'])
-        return Response({'token': token.key})
+        return Response({
+            'user_pk': user.pk,
+            'user_name': user.email,
+            'token': token.key
+        })
 
 
 obtain_auth_token = ObtainAuthToken.as_view()
