@@ -1,12 +1,16 @@
 import requests
 from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from member.serializers import UserSerializer
+
 __all__ = [
     'FacebookLoginView',
 ]
+
 User = get_user_model()
 
 
@@ -25,8 +29,22 @@ class FacebookLoginView(APIView):
             raise APIException('token require')
 
         self.debug_token(token)
-        user_info = self.get_user_info(token = token)
-        return Response(user_info)
+        user_info = self.get_user_info(token=token)
+        email = '{id}@crusia.xyz'.format(id=user_info['id'])
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+        else:
+            user = User.objects.create_facebook_user(user_info=user_info, email=email)
+
+        token, token_created = Token.objects.get_or_create(user=user)
+
+        # 관련정보를 한번에 리턴
+        ret = {
+            'token': token.key,
+            'user': UserSerializer(user).data,
+        }
+        return Response(ret)
+
 
     def debug_token(self, token):
         url_debug_token = 'https://graph.facebook.com/debug_token'
