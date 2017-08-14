@@ -6,3 +6,4 @@ django-storages<1.7
 boto3<1.5
 djangorestframework<3.7
 requests<=2.19
+django-filter<1.1
