@@ -1,4 +1,5 @@
 import requests
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import APIException
@@ -15,12 +16,9 @@ User = get_user_model()
 
 
 class FacebookLoginView(APIView):
-    FACEBOOK_APP_ID = '109545549725622'
-    FACEBOOK_SECRET_CODE = '7849ce8eda45d7d55665a880c1d8d433'
-
     APP_ACCESS_TOKEN = '{}|{}'.format(
-        FACEBOOK_APP_ID,
-        FACEBOOK_SECRET_CODE,
+        settings.FACEBOOK_APP_ID,
+        settings.FACEBOOK_SECRET_CODE,
     )
 
     def post(self, request):

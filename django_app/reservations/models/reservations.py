@@ -15,8 +15,8 @@ class Reservations(models.Model):
     checkin_date = models.DateField()
     checkout_date = models.DateField()
 
-    available_dates = models.CharField(max_length=200, blank=True, null=True)
-    disable_dates = models.CharField(max_length=200, blank=True, null=True)
+    available_dates = models.CharField(max_length=1000, blank=True, null=True)
+    disable_dates = models.CharField(max_length=1000, blank=True, null=True)
 
     adults = models.IntegerField(default=0)
     children = models.IntegerField(default=0)
