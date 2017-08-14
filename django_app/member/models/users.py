@@ -3,8 +3,6 @@ from django.db import models
 
 
 class NewUserManager(UserManager):
-    pass
-
     def create_facebook_user(self, user_info, username):
         return self.create_user(
             username=username,

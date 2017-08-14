@@ -30,11 +30,11 @@ class FacebookLoginView(APIView):
 
         self.debug_token(token)
         user_info = self.get_user_info(token=token)
-        email = '{id}@crusia.xyz'.format(id=user_info['id'])
-        if User.objects.filter(email=email).exists():
-            user = User.objects.get(email=email)
+        username = '{id}@crusia.xyz'.format(id=user_info['id'])
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
         else:
-            user = User.objects.create_facebook_user(user_info=user_info, email=email)
+            user = User.objects.create_facebook_user(user_info=user_info, username=username)
 
         token, token_created = Token.objects.get_or_create(user=user)
 
