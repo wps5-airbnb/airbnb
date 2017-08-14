@@ -59,11 +59,6 @@ class ReservationSerializer(serializers.ModelSerializer):
             'user',
         ]
 
-    def validate_reserved_date(self, reserved_date):
-        if Reservations.objects.filter(reserved_date=reserved_date).exists():
-            raise serializers.ValidationError("Already reserved")
-        return reserved_date
-
 
     # def validate_checkin_date(self, checkin_date):
     #     selected_house = int(self.context["request"].query_params["house"])
@@ -78,10 +73,21 @@ class ReservationSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError('Already reserved')
     #     return checkout_date
 
-    # def validate_checkout_date(self, checkout_date):
-    #     if Reservations.objects.filter(checkout_date=checkout_date).exists():
-    #         raise serializers.ValidationError('Already reserved')
-    #     return checkout_date
+    def validate_checkin_date(self, checkin_date):
+        if Reservations.objects.filter(checkin_date__gte=checkin_date).exists():
+            raise serializers.ValidationError('Already reserved')
+        return checkin_date
+
+    def validate_checkout_date(self, checkout_date):
+        if Reservations.objects.filter(checkout_date__lte=checkout_date).exists():
+            raise serializers.ValidationError('Already reserved')
+        return checkout_date
+
+    def validate_reserved_date(self, reserved_date):
+        if Reservations.objects.filter(reserved_date=reserved_date).exists():
+            raise serializers.ValidationError("Already reserved")
+        return reserved_date
+
 
     # def validate_reserved_date(self, reserved_date):
     #     if Reservations.objects.filter(reserved_date=reserved_date).exists():
@@ -93,15 +99,15 @@ class ReservationSerializer(serializers.ModelSerializer):
         house_pk = int(self.context["request"].query_params["house"])
         user = MyUser.objects.get(pk=user_pk)
         house = House.objects.get(pk=house_pk)
-        # checkin_date = self.data('checkin_date', '')
-        # checkout_date = self.data('checkout_date', '')
+        checkin_date = self.validated_data.get('checkin_date', '')
+        checkout_date = self.validated_data.get('checkout_date', '')
         reserved_date = self.validated_data.get('reserved_date', '')
         message_to_host = self.data["message_to_host"]
         Reservations.objects.create(
             user=user,
             house=house,
-            # checkin_date=checkin_date,
-            # checkout_date=checkout_date,
+            checkin_date=checkin_date,
+            checkout_date=checkout_date,
             reserved_date=reserved_date,
             message_to_host=message_to_host,
         )

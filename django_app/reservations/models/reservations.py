@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import DateRangeField
 from django.db import models
+from psycopg2._range import DateRange
 
 from house.models import House
 
@@ -31,7 +33,7 @@ class Reservations(models.Model):
     checkin_date = models.DateField(null=False, blank=False)
     checkout_date = models.DateField(null=False, blank=False)
 
-    reserved_date = models.DateField()
+    reserved_date = DateRangeField
 
     # 예약 날짜
     created_date = models.DateTimeField(auto_now_add=True)
