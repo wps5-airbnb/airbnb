@@ -64,7 +64,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         house = House.objects.get(pk=house_pk)
         checkin_date = self.validated_data.get('checkin_date', '')
         checkout_date = self.validated_data.get('checkout_date', '')
-        message_to_host = self.data["message_to_host"]
+        message_to_host = self.validated_data.get('message_to_host', '')
         Reservations.objects.create(
             guest=guest,
             house=house,
