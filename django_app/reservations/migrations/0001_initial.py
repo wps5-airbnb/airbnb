@@ -31,6 +31,9 @@ class Migration(migrations.Migration):
                 ('message_to_host', models.TextField(blank=True, null=True)),
                 ('guest', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('house', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='house.House')),
+                ('available_dates', models.CharField(blank=True, max_length=200, null=True)),
+                ('disable_dates', models.CharField(blank=True, max_length=200, null=True)),
+                ('modified_date', models.DateField(auto_now=True)),
             ],
         ),
     ]
