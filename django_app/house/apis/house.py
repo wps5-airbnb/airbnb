@@ -118,10 +118,10 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         serializer.save()
 
 
-# lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',
-#          'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
-#          'Wireless_Internet', 'Free_parking', 'Breakfast', 'Dryer', 'Cable_TV', 'Hangers',
-#          'Washer', 'Shampoo', 'Essentials', 'Heating', 'TV', 'Air_conditioning', ]
+lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',
+         'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
+         'Wireless_Internet', 'Free_parking', 'Breakfast', 'Dryer', 'Cable_TV', 'Hangers',
+         'Washer', 'Shampoo', 'Essentials', 'Heating', 'TV', 'Air_conditioning', ]
 
 
 class HouseCreateListViewWithPage(HouseCreateListView):
