@@ -18,4 +18,14 @@ class Migration(migrations.Migration):
             name='identifier',
             field=models.CharField(max_length=40, unique=True),
         ),
+        migrations.RemoveField(
+            model_name='myuser',
+            name='identifier',
+        ),
+        migrations.AddField(
+            model_name='myuser',
+            name='user_type',
+            field=models.CharField(choices=[('django', 'Django'), ('facebook', 'Facebook')], default='django',
+                                   max_length=20),
+        ),
     ]
