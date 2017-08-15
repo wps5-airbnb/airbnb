@@ -34,7 +34,7 @@ class ObtainAuthToken(APIView):
         user.save(update_fields=['last_login'])
         return Response({
             'user_pk': user.pk,
-            'user_name': user.email,
+            'user_name': user.username,
             'token': token.key
         })
 

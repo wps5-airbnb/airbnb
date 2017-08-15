@@ -45,6 +45,8 @@ class MyUser(AbstractUser):
 
     username = models.EmailField(unique=True)
 
+    email = models.EmailField(unique=False)
+
     like_houses = models.ManyToManyField(
         'house.House',
         through='wishlist.Wishlist',

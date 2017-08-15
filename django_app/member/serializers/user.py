@@ -57,7 +57,7 @@ class UserCreateSerializer(serializers.Serializer):
     agreement = serializers.BooleanField(default=True)
 
     def validate_email(self, email):
-        if MyUser.objects.filter(email=email).exists():
+        if MyUser.objects.filter(username=email).exists():
             raise serializers.ValidationError('This Email already exist')
         return email
 
