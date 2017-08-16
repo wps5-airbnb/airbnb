@@ -66,6 +66,12 @@ class House(models.Model):
         through='reservations.Reservations',
     )
 
+    house_liker = models.ManyToManyField(
+        User,
+        related_name='get_wishlist',
+        through='wishlist.Wishlist',
+    )
+
 
 class Images(models.Model):
     def __str__(self):
