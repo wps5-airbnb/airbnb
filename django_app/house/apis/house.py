@@ -39,7 +39,7 @@ class HouseCreateListView(generics.ListCreateAPIView):
         built_in_amenities = [i.name for i in Amenities.objects.all()]
         if serializer._context["request"].POST.get("amenities") is not None and serializer._context["request"].POST.get("amenities") is not '':
             amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
-            if len(amenities_list) - 1:
+            if len(amenities_list):
                 instance.amenities.clear()
                 for name in amenities_list:
                     if name in built_in_amenities:
@@ -74,7 +74,7 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         built_in_amenities = [i.name for i in Amenities.objects.all()]
         if serializer._context["request"].POST.get("amenities") is not None and serializer._context["request"].POST.get("amenities") is not '':
             amenities_list = [i.strip() for i in serializer._context["request"].POST["amenities"].split(',')]
-            if len(amenities_list) - 1:
+            if len(amenities_list):
                 instance.amenities.clear()
                 for name in amenities_list:
                     if name in built_in_amenities:
@@ -118,10 +118,10 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         serializer.save()
 
 
-lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',
-         'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
-         'Wireless_Internet', 'Free_parking', 'Breakfast', 'Dryer', 'Cable_TV', 'Hangers',
-         'Washer', 'Shampoo', 'Essentials', 'Heating', 'TV', 'Air_conditioning', ]
+# lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',
+#          'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
+#          'Wireless_Internet', 'Free_parking', 'Breakfast', 'Dryer', 'Cable_TV', 'Hangers',
+#          'Washer', 'Shampoo', 'Essentials', 'Heating', 'TV', 'Air_conditioning', ]
 
 
 class HouseCreateListViewWithPage(HouseCreateListView):
