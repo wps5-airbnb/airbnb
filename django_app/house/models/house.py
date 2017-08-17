@@ -65,6 +65,10 @@ class House(models.Model):
         related_name='reservations_to',
         through='reservations.Reservations',
     )
+    disabled_days = models.ManyToManyField(
+        'DisabledDay',
+        related_name='disabled_day_manager'
+    )
 
 
 class Images(models.Model):
@@ -92,3 +96,6 @@ class Amenities(models.Model):
 
     name = models.CharField(max_length=100)
 
+
+class DisabledDay(models.Model):
+    date = models.DateField(unique=True)

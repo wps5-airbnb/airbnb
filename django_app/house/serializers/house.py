@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from rest_framework import serializers
 
+from house.models.house import DisabledDay
 from member.serializers import UserSerializer
 from ..models import House, Images, Amenities
 
@@ -28,10 +31,19 @@ class ImageSerializer(serializers.ModelSerializer):
         ]
 
 
+class DisabledDaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DisabledDay
+        fields = [
+            'date',
+        ]
+
+
 class HouseSerializer(serializers.ModelSerializer):
     house_images = ImageSerializer(many=True, read_only=True, source='image')
     amenities = AmenitieSerializer(many=True, read_only=True, )
     host = UserSerializer(read_only=True)
+    disabled_days = DisabledDaySerializer(many=True, read_only=True)
 
     class Meta:
         model = House
@@ -58,12 +70,14 @@ class HouseSerializer(serializers.ModelSerializer):
             'amenities',
             'latitude',
             'longitude',
+            'disabled_days',
         ]
         read_only_fields = [
             'pk',
             'create_date',
             'modified_date',
             'amenities',
+            'disabled_days',
         ]
 
 
