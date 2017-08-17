@@ -118,6 +118,7 @@ class HouseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         serializer.save()
 
 
+# 데이터베이스를 새로 만들게 되면 Amenities 객체를 아래의 이름으로 새로 추가해줘야 함
 # lists = ['Pets_allowed', 'Elevator', 'Gym', 'Indoor_fireplace', 'Internet',
 #          'Doorman', 'Kitchen', 'Pool', 'Smoking_allowed', 'Wheelchair_accessible',
 #          'Wireless_Internet', 'Free_parking', 'Breakfast', 'Dryer', 'Cable_TV', 'Hangers',
