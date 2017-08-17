@@ -58,6 +58,7 @@ INSTALLED_APPS = [
 
     'django_filters',
     'wishlist',
+    'review',
 
     'rest_framework',
     'rest_framework.authtoken',
