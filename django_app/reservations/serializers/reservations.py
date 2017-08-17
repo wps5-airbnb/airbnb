@@ -2,15 +2,14 @@ from datetime import timedelta
 
 from rest_framework import serializers
 
-from house.models import House
+from house.models import House, Holidays
 from house.serializers.house import HouseSerializer
 from member.models import MyUser
 from member.serializers import UserSerializer
-from ..models import Reservations, Holiday
+from ..models import Reservations
 
 __all__ = [
     'ReservationSerializer',
-    'HolidaySerializer'
 ]
 
 
@@ -55,6 +54,8 @@ class ReservationSerializer(serializers.ModelSerializer):
         for date in reserved_date_list:
             if house.reservations_set.filter(checkin_date__lt=date, checkout_date__gt=date).exists():
                 raise serializers.ValidationError('이미 예약되어있는 기간입니다.')
+            elif house.holidays_set.filter(date=date).exists():
+                raise serializers.ValidationError('휴일에는 예약 하실 수 없습니다.')
         return data
 
     def save(self, *args, **kwargs):
@@ -74,16 +75,3 @@ class ReservationSerializer(serializers.ModelSerializer):
         )
 
 
-class HolidaySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Holiday
-        fields = [
-            'name',
-            'date',
-            'active',
-        ]
-
-        read_only_fields = [
-            'created_date',
-            'updated_date'
-        ]
