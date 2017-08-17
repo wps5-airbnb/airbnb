@@ -72,6 +72,12 @@ class House(models.Model):
         through='wishlist.Wishlist',
     )
 
+    house_review = models.ManyToManyField(
+        User,
+        related_name='get_review',
+        through='review.Review',
+    )
+
 
 class Images(models.Model):
     def __str__(self):
