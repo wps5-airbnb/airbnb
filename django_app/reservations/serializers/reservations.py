@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from rest_framework import serializers
 
-from house.models import House
+from house.models import House, DisableDay
 from house.serializers.house import HouseSerializer
 from member.models import MyUser
 from member.serializers import UserSerializer
@@ -51,9 +51,10 @@ class ReservationSerializer(serializers.ModelSerializer):
         house = House.objects.get(pk=house_pk)
 
         reserved_date_list = [checkin_date + timedelta(n) for n in range(schedule_of_stay.days)]
-        for date in reserved_date_list:
-            if house.reservations_set.filter(checkin_date__lt=date, checkout_date__gt=date).exists():
-                raise serializers.ValidationError('이미 예약되어있는 기간입니다.')
+        disable_date_list = [i.date for i in house.disable_days.all()]
+        for day in reserved_date_list:
+            if day in disable_date_list:
+                raise serializers.ValidationError('예약이 불가능한 날짜를 선택하셨습니다')
         return data
 
     def save(self, *args, **kwargs):
@@ -71,3 +72,8 @@ class ReservationSerializer(serializers.ModelSerializer):
             checkout_date=checkout_date,
             message_to_host=message_to_host,
         )
+
+        reserved_date_list = [checkin_date + timedelta(n) for n in range((checkout_date - checkin_date).days)]
+        for date in reserved_date_list:
+            date_instance, created = DisableDay.objects.get_or_create(date=date)
+            house.disable_days.add(date_instance)
