@@ -38,8 +38,9 @@ class Reservations(models.Model):
     message_to_host = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return '{}님\nCheck in: {} ~ Check out: {} 일자로 예약이 완료 되었습니다.'.format(
+        return '{}님\nCheck in: {} ~ Check out: {} 일자의 예약'.format(
             self.guest,
             self.checkin_date,
             self.checkout_date
         )
+
