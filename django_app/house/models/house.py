@@ -7,6 +7,7 @@ __all__ = [
     'House',
     'Images',
     'Amenities',
+    'DisableDay',
 ]
 
 User = get_user_model()
@@ -77,6 +78,10 @@ class House(models.Model):
         related_name='get_review',
         through='review.Review',
     )
+    disable_days = models.ManyToManyField(
+        'DisableDay',
+        related_name='disabled_day_manager',
+    )
 
 
 class Images(models.Model):
@@ -103,4 +108,8 @@ class Amenities(models.Model):
         return self.name
 
     name = models.CharField(max_length=100)
+
+
+class DisableDay(models.Model):
+    date = models.DateField(unique=True)
 
