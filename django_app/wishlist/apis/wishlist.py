@@ -37,6 +37,6 @@ class WishlistView(APIView):
 
     def get(self, request):
         user = request.user
-        like_houses = user.get_wishlist.all()
+        like_houses = user.get_wishlist.order_by('wishlist__created_date').reverse()
         serializer = HouseSerializer(like_houses, many=True)
         return Response(serializer.data)

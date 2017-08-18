@@ -80,7 +80,7 @@ class House(models.Model):
     )
     disable_days = models.ManyToManyField(
         'DisableDay',
-        related_name='disabled_day_manager',
+        related_name='impossible_house',
     )
 
 
