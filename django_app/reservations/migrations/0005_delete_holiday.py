@@ -15,4 +15,8 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='Holiday',
         ),
+        migrations.RemoveField(
+            model_name='reservations',
+            name='modified_date',
+        ),
     ]

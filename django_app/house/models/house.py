@@ -2,11 +2,11 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-
 __all__ = [
     'House',
     'Images',
     'Amenities',
+    'DisableDay',
 ]
 
 User = get_user_model()
@@ -77,6 +77,10 @@ class House(models.Model):
         related_name='get_review',
         through='review.Review',
     )
+    disable_days = models.ManyToManyField(
+        'DisableDay',
+        related_name='impossible_house'
+    )
 
 
 class Images(models.Model):
@@ -104,3 +108,9 @@ class Amenities(models.Model):
 
     name = models.CharField(max_length=100)
 
+
+class DisableDay(models.Model):
+    def __str__(self):
+        return '{}'.format(self.date)
+
+    date = models.DateField()

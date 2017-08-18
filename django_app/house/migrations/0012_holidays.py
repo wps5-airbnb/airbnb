@@ -13,16 +13,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Holidays',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('date', models.DateField()),
-                ('active', models.BooleanField(default=True)),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('updated_date', models.DateTimeField(auto_now=True)),
-                ('house', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='house.House')),
-            ],
-        ),
     ]

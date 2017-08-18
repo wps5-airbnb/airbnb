@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from house.models import DisableDay
 from member.serializers import UserSerializer
 from ..models import House, Images, Amenities
 
@@ -26,11 +28,19 @@ class ImageSerializer(serializers.ModelSerializer):
             'image',
         ]
 
+class DisableDaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DisableDay
+        fields = [
+            'date',
+        ]
+
 
 class HouseSerializer(serializers.ModelSerializer):
     house_images = ImageSerializer(many=True, read_only=True, source='image')
     amenities = AmenitieSerializer(many=True, read_only=True, )
     host = UserSerializer(read_only=True)
+    disable_days = DisableDaySerializer(many=True, read_only=True)
 
     class Meta:
         model = House
@@ -57,12 +67,14 @@ class HouseSerializer(serializers.ModelSerializer):
             'amenities',
             'latitude',
             'longitude',
+            'disable_days',
         ]
         read_only_fields = [
             'pk',
             'create_date',
             'modified_date',
             'amenities',
+            'disable_days',
         ]
 
 
