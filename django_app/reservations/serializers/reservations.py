@@ -6,11 +6,10 @@ from house.models import House
 from house.serializers.house import HouseSerializer
 from member.models import MyUser
 from member.serializers import UserSerializer
-from ..models import Reservations, Holiday
+from ..models import Reservations
 
 __all__ = [
     'ReservationSerializer',
-    'HolidaySerializer'
 ]
 
 
@@ -72,18 +71,3 @@ class ReservationSerializer(serializers.ModelSerializer):
             checkout_date=checkout_date,
             message_to_host=message_to_host,
         )
-
-
-class HolidaySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Holiday
-        fields = [
-            'name',
-            'date',
-            'active',
-        ]
-
-        read_only_fields = [
-            'created_date',
-            'updated_date'
-        ]

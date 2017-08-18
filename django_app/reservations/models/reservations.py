@@ -7,7 +7,6 @@ User = get_user_model()
 
 __all__ = [
     'Reservations',
-    'Holiday',
 ]
 
 
@@ -44,19 +43,3 @@ class Reservations(models.Model):
             self.checkin_date,
             self.checkout_date
         )
-
-
-class Holiday(models.Model):
-    # 임의로 예약 불가능 날짜를 정할 때
-    name = models.CharField(max_length=100, blank=True)
-
-    # 예약 불가능 날짜
-    date = models.DateField(null=True, blank=True)
-    active = models.BooleanField(default=True, editable=True)
-
-    # 설정시간
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return '{}_{}'.format(self.name, self.date)
