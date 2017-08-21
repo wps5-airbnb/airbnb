@@ -113,3 +113,4 @@ class Amenities(models.Model):
 class DisableDay(models.Model):
     date = models.DateField(unique=True)
 
+
