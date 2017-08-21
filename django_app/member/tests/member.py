@@ -1,7 +1,9 @@
 """
 여기있는 테스트는 기능테스트이므로 나중에 기능 테스트로 통합할 예정
 """
+import filecmp
 from django.test import TestCase, Client
+from django.test.client import encode_multipart
 from rest_framework.authtoken.models import Token
 
 from member.models import MyUser
@@ -78,6 +80,85 @@ class UserAPITest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(result['token'], Token.objects.get(user_id=self.user.pk).key)
+
+    def test_user_update(self):
+        # User를 로그인 시키는 부분
+        test_user = {
+            'email': 'test_user10@gmail.com',
+            'password': 'asd1234567'
+        }
+        client = Client()
+        response = client.post(
+            '/apis/user/login/',
+            test_user,
+        )
+        login_result = response.json()
+        token = login_result['token']
+
+        # 로그인시 받아진 토큰을 헤더에 넣는 부분
+        client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + token
+
+        # User Update 요청 부분
+        user_pk = MyUser.objects.get(username='test_user10@gmail.com').pk
+
+        img = open('../.media/user/jeakyung.jpg', 'rb')  # image를 binary형식으로 open 후 저장
+
+        request_contents = {
+            'first_name': 'NotLinda',
+            'last_name': 'NoSorry',
+            'birthday': '1990-01-30',
+            'gender': 'MALE',
+            'phone_num': '010-1234-5678',
+            "preference_language": 'Korean',
+            "preference_currency": 'Won',
+            "living_site": 'Seoul',
+            "introduce": 'Hi, Nice to meet you',
+            "img_profile": img,
+        }
+
+        # Patch 요청은 encoding을 해야 함
+        encoded_content = encode_multipart('BoUnDaRyStRiNg', request_contents)
+        content_type = 'multipart/form-data; boundary=BoUnDaRyStRiNg'
+
+        response = client.patch(
+            '/apis/user/{}/'.format(user_pk),
+            encoded_content,
+            content_type=content_type,
+            format='multipart',
+        )
+        img.close()
+
+        result = response.json()
+
+        # 요청 상태 확인
+        self.assertEqual(response.status_code, 200)
+
+        self.assertNotEqual(result['first_name'], 'Linda')
+        self.assertNotEqual(result['last_name'], 'Sorry')
+        self.assertNotEqual(result['birthday'], '1980-09-25')
+        self.assertNotEqual(result['gender'], 'OTHER')
+        self.assertNotEqual(result['phone_num'], 'null')
+        self.assertNotEqual(result['preference_language'], 'null')
+        self.assertNotEqual(result['preference_currency'], 'null')
+        self.assertNotEqual(result['living_site'], 'null')
+        self.assertNotEqual(result['introduce'], 'null')
+        self.assertNotEqual(result['img_profile'], 'null')
+
+        self.assertEqual(result['first_name'], 'NotLinda')
+        self.assertEqual(result['last_name'], 'NoSorry')
+        self.assertEqual(result['birthday'], '1990-01-30')
+        self.assertEqual(result['gender'], 'MALE')
+        self.assertEqual(result['phone_num'], '010-1234-5678')
+        self.assertEqual(result['preference_language'], 'Korean')
+        self.assertEqual(result['preference_currency'], 'Won')
+        self.assertEqual(result['living_site'], 'Seoul')
+        self.assertEqual(result['introduce'], 'Hi, Nice to meet you')
+
+        # img_profile 검사
+
+        origin_img = '../.media/user/jeakyung.jpg'
+        saved_img = MyUser.objects.get(pk=user_pk).img_profile
+        self.assertTrue(filecmp.cmp(origin_img, '../.media/{}'.format(saved_img)))
 
     def test_logout(self):
         """
