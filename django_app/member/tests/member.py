@@ -9,7 +9,7 @@ from member.models import MyUser
 
 class UserAPITest(TestCase):
     """
-    MyUser 모델을 테스트 합니다.
+    MyUser 모델을 테스트 합니다. Am
     """
 
     # Up은 대문자 U
@@ -111,3 +111,31 @@ class UserAPITest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(logout_result, 'Logout Completed')
+
+    def test_user_delete(self):
+        # User를 로그인 시키는 부분
+        test_user = {
+            'email': 'test_user10@gmail.com',
+            'password': 'asd1234567'
+        }
+        client = Client()
+
+        response = client.post(
+            '/apis/user/login/',
+            test_user,
+        )
+        login_result = response.json()
+        token = login_result['token']
+
+        # 로그인시 받아진 토큰을 헤더에 넣는 부분
+        client = Client()
+        client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + token
+
+        # User 삭제 요청을 하는 부분
+        user_pk = MyUser.objects.get(username='test_user10@gmail.com').pk
+
+        response = client.delete(
+            '/apis/user/{}/'.format(user_pk),
+        )
+
+        self.assertEqual(response.status_code, 204)
