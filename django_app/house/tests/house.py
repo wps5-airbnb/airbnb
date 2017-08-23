@@ -37,7 +37,66 @@ class HouseAPITest(TestCase):
         # 로그인시 받아진 토큰을 헤더에 넣는 부분
         self.client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + token
 
+        # test 용 dummy house 만들기
+        self.dummy_house1 = House.objects.create(
+            host=self.user,
+            title='첫번째 숙소',
+            price_per_day=40000,
+            extra_people_fee=20000,
+            cleaning_fee=8000,
+            weekly_discount=10,
+            accommodates=4,
+            bathrooms=1,
+            bedrooms=1,
+            beds=1,
+            latitude=12.1234,
+            longitude=127.1234,
+        )
+
+        self.dummy_house2 = House.objects.create(
+            host=self.user,
+            title='두번째 숙소',
+            price_per_day=30000,
+            extra_people_fee=10000,
+            cleaning_fee=5000,
+            weekly_discount=12,
+            accommodates=3,
+            bathrooms=1,
+            bedrooms=1,
+            beds=1,
+            latitude=12.1234,
+            longitude=127.1234,
+        )
+
+    def test_house_list(self):
+        """
+        House list 기능을 테스트 합니다.
+        :return: N/A
+        """
+        response = self.client.get('/apis/house/')
+        result = response.json()
+
+        self.assertEqual(response.status_code, 200)
+
+        for house in result:
+            house_in_db = House.objects.get(pk=house['pk'])
+            self.assertEqual(house['title'], house_in_db.title)
+            self.assertEqual(house['price_per_day'], house_in_db.price_per_day)
+            self.assertEqual(house['extra_people_fee'], house_in_db.extra_people_fee)
+            self.assertEqual(house['cleaning_fee'], house_in_db.cleaning_fee)
+            self.assertEqual(house['weekly_discount'], house_in_db.weekly_discount)
+            self.assertEqual(house['accommodates'], house_in_db.accommodates)
+            self.assertEqual(house['bathrooms'], house_in_db.bathrooms)
+            self.assertEqual(house['bedrooms'], house_in_db.bedrooms)
+            self.assertEqual(house['beds'], house_in_db.beds)
+            self.assertEqual(house['latitude'], house_in_db.latitude)
+            self.assertEqual(house['longitude'], house_in_db.longitude)
+
     def test_house_create(self):
+        """
+        House Create(Hosting) 기능을 테스트 합니다.
+        :return: N/A
+        """
         request_image1 = open('../.media/user/jeakyung.jpg', 'rb')  # image를 binary형식으로 open 후 저장
         request_image2 = open('../.media/user/jeakyung.jpg', 'rb')  # image를 binary형식으로 open 후 저장
 
