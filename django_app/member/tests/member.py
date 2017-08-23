@@ -1,5 +1,5 @@
 """
-여기있는 테스트는 기능테스트이므로 나중에 기능 테스트로 통합할 예정
+여기있는 테스트는 기능테스트이므로 나중에 기능 테스트로 통합할 예정(This is Not Unit test)
 """
 import filecmp
 from django.test import TestCase, Client
@@ -45,7 +45,7 @@ class UserAPITest(TestCase):
         result = response.json()
 
         """
-        SignUp에 필드가 정상적으로 들어 갔는지 확인하는 부분
+        SignUp 요청의 내용과 Response의 내용이 일치하는지 검증하는 부분
         """
         self.assertEqual(response.status_code, 201)
         self.assertEqual(result["email"], test_user["email"])
@@ -54,7 +54,7 @@ class UserAPITest(TestCase):
         self.assertEqual(result["birthday"], test_user["birthday"])
 
         """
-        MyUser객체가 잘 만들어 졌는지 확인하는 부분
+        MyUser객체가 잘 만들어 졌는지 검증하는 부분
         """
         user = MyUser.objects.get(username=test_user["email"])
         self.assertEqual(test_user["email"], user.email)
@@ -124,7 +124,6 @@ class UserAPITest(TestCase):
             '/apis/user/{}/'.format(user_pk),
             encoded_content,
             content_type=content_type,
-            format='multipart',
         )
         img.close()
 
