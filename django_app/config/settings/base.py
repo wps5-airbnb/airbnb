@@ -40,7 +40,6 @@ SECRET_KEY = config_secret_common['django']['secret_key']
 FACEBOOK_APP_ID = config_secret_common['facebook']['facebook_app_id']
 FACEBOOK_SECRET_CODE = config_secret_common['facebook']['facebook_secret_code']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -138,5 +137,10 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'TEST_REQUEST_RENDERER_CLASSES': (
+        'rest_framework.renderers.MultiPartRenderer',
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer'
     )
 }
