@@ -1,6 +1,5 @@
-from pprint import pprint
-
 from datetime import timedelta, datetime
+
 from django.test import TestCase
 from django.test.client import encode_multipart
 from rest_framework.test import APIClient
@@ -77,7 +76,6 @@ class ReservationsAPITest(TestCase):
         )
 
         result = response.json()
-        pprint(result)
 
         # HTTP status code 확인
         self.assertEqual(response.status_code, 201)
@@ -94,13 +92,16 @@ class ReservationsAPITest(TestCase):
 
         # House disable_days에 정상적으로 추가되었는지 검증하는 부분
         house = House.objects.get(pk=1)
-        request_reserved_dates = [datetime.strptime(reservations_contents['checkin_date'], '%Y-%m-%d').date() + timedelta(n) for n in range((datetime.strptime(reservations_contents['checkout_date'], '%Y-%m-%d') - datetime.strptime(reservations_contents['checkin_date'], '%Y-%m-%d')).days)]
+        request_reserved_dates = [
+            datetime.strptime(reservations_contents['checkin_date'], '%Y-%m-%d').date() + timedelta(n) for n in range((
+                                                                                                                      datetime.strptime(
+                                                                                                                          reservations_contents[
+                                                                                                                              'checkout_date'],
+                                                                                                                          '%Y-%m-%d') - datetime.strptime(
+                                                                                                                          reservations_contents[
+                                                                                                                              'checkin_date'],
+                                                                                                                          '%Y-%m-%d')).days)]
         created_disable_days = [i.date for i in house.disable_days.all()]
 
         for day in request_reserved_dates:
             self.assertTrue(day in created_disable_days)
-
-
-
-
-
