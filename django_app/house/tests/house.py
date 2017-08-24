@@ -3,6 +3,7 @@
 """
 import filecmp
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from django.test.client import encode_multipart
 from rest_framework.test import APIClient
@@ -17,6 +18,11 @@ class HouseAPITest(TestCase):
         self.user = MyUser.objects.create_user(
             username='test_user10@gmail.com',
             email='test_user10@gmail.com',
+            password='asd1234567'
+        )
+        self.user2 = MyUser.objects.create_user(
+            username='test_user11@gmail.com',
+            email='test_user11@gmail.com',
             password='asd1234567'
         )
 
@@ -276,3 +282,47 @@ class HouseAPITest(TestCase):
 
         self.assertTrue(filecmp.cmp(request_image_url1, created_images[0]))
         self.assertTrue(filecmp.cmp(request_image_url2, created_images[1]))
+
+    def test_house_delete(self):
+        """
+        기존의 house객체를 지우는 요청을 보내고 실제로 그 객체가 사라졌는지 확인하는 test
+        :return: N/A
+        """
+        response = self.client.delete(
+            '/apis/house/1/',
+        )
+
+        self.assertEqual(response.status_code, 204)
+
+        try:
+            House.objects.get(pk=1)
+        except ObjectDoesNotExist:
+            confirm = True
+        else:
+            confirm = False
+
+        self.assertTrue(confirm)
+
+        """
+        권한 확인하는 부분, user2가 다른 유저 소유의 house를 지우려고 할 때 에러가 발생하는지 확인하는 부분
+        """
+        # user2의 로그인
+        test_user2 = {
+            'email': 'test_user11@gmail.com',
+            'password': 'asd1234567'
+        }
+        self.client2 = APIClient()
+        response = self.client.post(
+            '/apis/user/login/',
+            test_user2,
+        )
+        login_result = response.json()
+        token = login_result['token']
+        self.client2.defaults['HTTP_AUTHORIZATION'] = 'Token ' + token
+
+        # user2의 다른 유저 소유의 house를 지우는 요청 시도
+        response = self.client2.delete(
+            '/apis/house/2/',
+        )
+
+        self.assertEqual(response.status_code, 403)  # 에러를 발생시켜야 정상
