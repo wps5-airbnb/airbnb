@@ -5,7 +5,7 @@ from .models import House, Images
 
 class PropertyImageInline(admin.TabularInline):
     model = Images
-    extra = 3
+    extra = 5
 
 
 class PropertyAdmin(admin.ModelAdmin):

@@ -11,7 +11,6 @@ __all__ = [
     'UserRetrieveUpdateDestroyView',
 ]
 
-
 class UserCreateListView(generics.ListCreateAPIView):
     queryset = MyUser.objects.all()
 

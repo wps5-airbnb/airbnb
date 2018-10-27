@@ -17,6 +17,7 @@ class Command(BaseCommand):
         if not User.objects.filter(email=email).exists():
             # 해당 username으로 superuser를 생성
             User.objects.create_superuser(
+                username=email,
                 email=email,
                 password=password,
             )
