@@ -9,7 +9,7 @@
   sudo apt-get install libmysqlclient-dev
   ```
 
-* Anaconda
+* Anaconda install
 
   ```bash
   wget https://repo.continuum.io/archive/Anaconda3-4.4.0-Linux-x86_64.sh 
@@ -41,15 +41,15 @@
   ```json
   {
     "django": {
-      "secret_key": "put django secret key here",
+      "secret_key": "put the django secret key here",
       "default_superuser": {
         "email": "airbnb_admin@gmail.com",
         "password": "12345678"
       }
     },
     "facebook": {
-      "facebook_app_id": "app id",
-      "facebook_secret_code": "secret_code"
+      "facebook_app_id": "facebook app id",
+      "facebook_secret_code": "facebook secret code"
     }
   }
   ```
@@ -86,10 +86,24 @@
   ./manage.py migrate
   ```
 
-* create superuser
+## Run Locally
+
+- create superuser
 
   ```
   ./manage.py createsu
   ```
 
-  then, you can create ID: airbnb_admin@gmail.com PW: camp1017
+  then, you can login with ID: airbnb_admin@gmail.com PW: 12345678
+
+  
+
+- runserver
+
+  ```
+  cd django_app
+  ./manage.py runserver
+  ```
+
+You can check in  `http://localhost/admin` and login by super user.
+
